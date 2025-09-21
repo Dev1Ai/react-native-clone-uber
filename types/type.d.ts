@@ -53,6 +53,11 @@ declare interface JobRequest {
   };
 }
 
+declare interface JobRequestCardProps {
+  index: number;
+  item: JobRequest;
+}
+
 declare interface ButtonProps extends TouchableOpacityProps {
   title: string;
   bgVariant?: "primary" | "secondary" | "danger" | "outline" | "success";
