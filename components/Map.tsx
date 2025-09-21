@@ -11,7 +11,7 @@ import {
   generateMarkersFromData,
 } from "@/lib/map";
 import { useDriverStore, useLocationStore } from "@/store";
-import { Driver, MarkerData } from "@/types/type";
+import { Provider, MarkerData } from "@/types/type";
 
 const directionsAPI = process.env.EXPO_PUBLIC_DIRECTIONS_API_KEY;
 
@@ -24,7 +24,7 @@ const Map = () => {
   } = useLocationStore();
   const { selectedDriver, setDrivers } = useDriverStore();
 
-  const { data: drivers, loading, error } = useFetch<Driver[]>("/(api)/driver");
+  const { data: drivers, loading, error } = useFetch<Provider[]>("/(api)/driver");
   const [markers, setMarkers] = useState<MarkerData[]>([]);
 
   useEffect(() => {

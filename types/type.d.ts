@@ -1,6 +1,6 @@
 import { TextInputProps, TouchableOpacityProps } from "react-native";
 
-declare interface Driver {
+declare interface Provider {
   id: number;
   first_name: string;
   last_name: string;
@@ -33,7 +33,7 @@ declare interface MapProps {
   onMapReady?: () => void;
 }
 
-declare interface Ride {
+declare interface JobRequest {
   origin_address: string;
   destination_address: string;
   origin_latitude: number;

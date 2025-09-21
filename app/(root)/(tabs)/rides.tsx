@@ -5,16 +5,16 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import RideCard from "@/components/RideCard";
 import { images } from "@/constants";
 import { useFetch } from "@/lib/fetch";
-import { Ride } from "@/types/type";
+import { JobRequest } from "@/types/type";
 
-const Rides = () => {
+const JobRequests = () => {
   const { user } = useUser();
 
   const {
     data: recentRides,
     loading,
     error,
-  } = useFetch<Ride[]>(`/(api)/ride/${user?.id}`);
+  } = useFetch<JobRequest[]>(`/(api)/ride/${user?.id}`);
 
   return (
     <SafeAreaView className="flex-1 bg-white">
@@ -46,7 +46,7 @@ const Rides = () => {
         )}
         ListHeaderComponent={
           <>
-            <Text className="text-2xl font-JakartaBold my-5">All Rides</Text>
+            <Text className="text-2xl font-JakartaBold my-5">All JobRequests</Text>
           </>
         }
       />
@@ -54,4 +54,4 @@ const Rides = () => {
   );
 };
 
-export default Rides;
+export default JobRequests;

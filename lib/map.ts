@@ -1,4 +1,4 @@
-import { Driver, MarkerData } from "@/types/type";
+import { Provider, MarkerData } from "@/types/type";
 
 const directionsAPI = process.env.EXPO_PUBLIC_DIRECTIONS_API_KEY;
 
@@ -7,7 +7,7 @@ export const generateMarkersFromData = ({
   userLatitude,
   userLongitude,
 }: {
-  data: Driver[];
+  data: Provider[];
   userLatitude: number;
   userLongitude: number;
 }): MarkerData[] => {

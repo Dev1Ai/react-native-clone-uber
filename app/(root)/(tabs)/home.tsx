@@ -19,7 +19,7 @@ import RideCard from "@/components/RideCard";
 import { icons, images } from "@/constants";
 import { useFetch } from "@/lib/fetch";
 import { useLocationStore } from "@/store";
-import { Ride } from "@/types/type";
+import { JobRequest } from "@/types/type";
 
 const Home = () => {
   const { user } = useUser();
@@ -38,7 +38,7 @@ const Home = () => {
     data: recentRides,
     loading,
     error,
-  } = useFetch<Ride[]>(`/(api)/ride/${user?.id}`);
+  } = useFetch<JobRequest[]>(`/(api)/ride/${user?.id}`);
 
   useEffect(() => {
     (async () => {
@@ -131,7 +131,7 @@ const Home = () => {
             </>
 
             <Text className="text-xl font-JakartaBold mt-5 mb-3">
-              Recent Rides
+              Recent JobRequests
             </Text>
           </>
         }

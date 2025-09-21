@@ -23,10 +23,10 @@ const BookRide = () => {
       merchantIdentifier="merchant.com.uber"
       urlScheme="myapp"
     >
-      <RideLayout title="Book Ride">
+      <RideLayout title="Book JobRequest">
         <>
           <Text className="text-xl font-JakartaSemiBold mb-3">
-            Ride Information
+            JobRequest Information
           </Text>
 
           <View className="flex flex-col w-full items-center justify-center mt-10">
@@ -55,7 +55,7 @@ const BookRide = () => {
 
           <View className="flex flex-col w-full items-start justify-center py-3 px-5 rounded-3xl bg-general-600 mt-5">
             <View className="flex flex-row items-center justify-between w-full border-b border-white py-3">
-              <Text className="text-lg font-JakartaRegular">Ride Price</Text>
+              <Text className="text-lg font-JakartaRegular">JobRequest Price</Text>
               <Text className="text-lg font-JakartaRegular text-[#0CC25F]">
                 ${driverDetails?.price}
               </Text>

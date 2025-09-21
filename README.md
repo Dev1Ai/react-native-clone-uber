@@ -62,19 +62,19 @@ members. It's a place where people help each other out.
 
 👉 **Home Screen with Live Location & Google Map**: Real-time location tracking with markers on a map.
 
-👉 **Recent Rides**: View a list of recent rides at a glance.
+👉 **Recent JobRequests**: View a list of recent rides at a glance.
 
 👉 **Google Places Autocomplete**: Search any place on Earth with autocomplete suggestions.
 
-👉 **Find Rides**: Search for rides by entering 'From' and 'To' locations.
+👉 **Find JobRequests**: Search for rides by entering 'From' and 'To' locations.
 
-👉 **Select Rides from Map**: Choose available cars near your location from the map.
+👉 **Select JobRequests from Map**: Choose available cars near your location from the map.
 
-👉 **Confirm Ride with Detailed Information**: View complete ride details, including time and fare price.
+👉 **Confirm JobRequest with Detailed Information**: View complete ride details, including time and fare price.
 
-👉 **Pay for Ride Using Stripe**: Make payments using multiple methods like cards and others.
+👉 **Pay for JobRequest Using Stripe**: Make payments using multiple methods like cards and others.
 
-👉 **Create Rides After Successful Payment**: Book a ride after confirming payment.
+👉 **Create JobRequests After Successful Payment**: Book a ride after confirming payment.
 
 👉 **Profile**: Manage account details in the profile screen.
 
@@ -170,7 +170,7 @@ Here are some code snippets from the project to help you get started quickly.
 ```ts
 import {TextInputProps, TouchableOpacityProps} from "react-native";
 
-declare interface Driver {
+declare interface Provider {
     driver_id: number;
     first_name: string;
     last_name: string;
@@ -203,7 +203,7 @@ declare interface MapProps {
     onMapReady?: () => void;
 }
 
-declare interface Ride {
+declare interface JobRequest {
     origin_address: string;
     destination_address: string;
     origin_latitude: number;
@@ -726,7 +726,7 @@ export const useFetch = <T>(url: string, options?: RequestInit) => {
   <summary><code>lib/map.ts</code></summary>
 
 ```ts
-import {Driver, MarkerData} from "@/types/type";
+import {Provider, MarkerData} from "@/types/type";
 
 const directionsAPI = process.env.EXPO_PUBLIC_GOOGLE_API_KEY;
 
@@ -735,7 +735,7 @@ export const generateMarkersFromData = ({
                                             userLatitude,
                                             userLongitude,
                                         }: {
-    data: Driver[];
+    data: Provider[];
     userLatitude: number;
     userLongitude: number;
 }): MarkerData[] => {
@@ -855,9 +855,9 @@ export const calculateDriverTimes = async ({
 <summary><code>lib/utils.ts</code></summary>
 
 ```ts
-import {Ride} from "@/types/type";
+import {JobRequest} from "@/types/type";
 
-export const sortRides = (rides: Ride[]): Ride[] => {
+export const sortRides = (rides: JobRequest[]): JobRequest[] => {
     const result = rides.sort((a, b) => {
         const dateA = new Date(`${a.created_at}T${a.ride_time}`);
         const dateB = new Date(`${b.created_at}T${b.ride_time}`);
@@ -908,7 +908,7 @@ export function formatDate(dateString: string): string {
 ### Queries
 
 <details>
-<summary><code>GET Rides SQL Query</code></summary>
+<summary><code>GET JobRequests SQL Query</code></summary>
 
 ```sql
 SELECT
@@ -945,7 +945,7 @@ ORDER BY
 </details>
 
 <details>
-<summary><code>SEED Drivers Query</code></summary>
+<summary><code>SEED Providers Query</code></summary>
 
 ```sql
 INSERT INTO drivers (id, first_name, last_name, profile_image_url, car_image_url, car_seats, rating)
@@ -961,7 +961,7 @@ VALUES
 ### Schema
 
 <details>
-<summary><code>CREATE Drivers Table SQL Query</code></summary>
+<summary><code>CREATE Providers Table SQL Query</code></summary>
 
 ```sql
 CREATE TABLE drivers (
@@ -978,7 +978,7 @@ CREATE TABLE drivers (
 </details>
 
 <details>
-<summary><code>CREATE Rides Table SQL Query</code></summary>
+<summary><code>CREATE JobRequests Table SQL Query</code></summary>
 
 ```sql
 CREATE TABLE rides (
@@ -1017,7 +1017,7 @@ CREATE TABLE users (
 ### Mock Data
 
 <details>
-<summary><code>Mock Drivers</code></summary>
+<summary><code>Mock Providers</code></summary>
 
 ```js
 [
@@ -1063,7 +1063,7 @@ CREATE TABLE users (
 </details>
 
 <details>
-<summary><code>Mock Rides</code></summary>
+<summary><code>Mock JobRequests</code></summary>
 
 ```js
 [
@@ -1331,10 +1331,10 @@ const BookRide = () => {
     )[0];
 
     return (
-        <RideLayout title="Book Ride">
+        <RideLayout title="Book JobRequest">
             <>
                 <Text className="text-xl font-JakartaSemiBold mb-3">
-                    Ride Information
+                    JobRequest Information
                 </Text>
 
                 <View className="flex flex-col w-full items-center justify-center mt-10">
@@ -1364,7 +1364,7 @@ const BookRide = () => {
                 <View
                     className="flex flex-col w-full items-start justify-center py-3 px-5 rounded-3xl bg-general-600 mt-5">
                     <View className="flex flex-row items-center justify-between w-full border-b border-white py-3">
-                        <Text className="text-lg font-JakartaRegular">Ride Price</Text>
+                        <Text className="text-lg font-JakartaRegular">JobRequest Price</Text>
                         <Text className="text-lg font-JakartaRegular text-[#0CC25F]">
                             ${driverDetails?.price}
                         </Text>

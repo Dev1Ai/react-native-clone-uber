@@ -2,9 +2,9 @@ import { Image, Text, View } from "react-native";
 
 import { icons } from "@/constants";
 import { formatDate, formatTime } from "@/lib/utils";
-import { Ride } from "@/types/type";
+import { JobRequest } from "@/types/type";
 
-const RideCard = ({ ride }: { ride: Ride }) => {
+const RideCard = ({ ride }: { ride: JobRequest }) => {
   return (
     <View className="flex flex-row items-center justify-center bg-white rounded-lg shadow-sm shadow-neutral-300 mb-3">
       <View className="flex flex-col items-start justify-center p-3">
@@ -45,7 +45,7 @@ const RideCard = ({ ride }: { ride: Ride }) => {
 
           <View className="flex flex-row items-center w-full justify-between mb-5">
             <Text className="text-md font-JakartaMedium text-gray-500">
-              Driver
+              Provider
             </Text>
             <Text className="text-md font-JakartaBold">
               {ride.driver.first_name} {ride.driver.last_name}

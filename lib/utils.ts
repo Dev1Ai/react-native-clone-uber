@@ -1,6 +1,6 @@
-import { Ride } from "@/types/type";
+import { JobRequest } from "@/types/type";
 
-export const sortRides = (rides: Ride[]): Ride[] => {
+export const sortRides = (rides: JobRequest[]): JobRequest[] => {
   const result = rides.sort((a, b) => {
     const dateA = new Date(`${a.created_at}T${a.ride_time}`);
     const dateB = new Date(`${b.created_at}T${b.ride_time}`);

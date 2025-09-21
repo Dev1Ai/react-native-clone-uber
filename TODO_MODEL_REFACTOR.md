@@ -1,1 +1,1 @@
-// TODO: Rename Ride -> JobRequest, Driver -> Provider, Passenger -> Customer
+// TODO: Rename JobRequest -> JobRequest, Provider -> Provider, Customer -> Customer
