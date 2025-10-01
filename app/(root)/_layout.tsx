@@ -4,15 +4,15 @@ const Layout = () => {
   return (
     <Stack>
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-      <Stack.Screen name="find-ride" options={{ headerShown: false }} />
+      <Stack.Screen name="find-job-request" options={{ headerShown: false }} />
       <Stack.Screen
-        name="confirm-ride"
+        name="confirm-job-request"
         options={{
           headerShown: false,
         }}
       />
       <Stack.Screen
-        name="book-ride"
+        name="book-job-request"
         options={{
           headerShown: false,
         }}

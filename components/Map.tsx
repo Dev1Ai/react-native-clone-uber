@@ -24,7 +24,11 @@ const Map = () => {
   } = useLocationStore();
   const { selectedDriver, setDrivers } = useDriverStore();
 
-  const { data: drivers, loading, error } = useFetch<Provider[]>("/(api)/driver");
+  const {
+    data: drivers,
+    loading,
+    error,
+  } = useFetch<Provider[]>("/(api)/driver");
   const [markers, setMarkers] = useState<MarkerData[]>([]);
 
   useEffect(() => {
@@ -42,6 +46,7 @@ const Map = () => {
   }, [drivers, userLatitude, userLongitude]);
 
   useEffect(() => {
+    let isMounted = true;
     if (
       markers.length > 0 &&
       destinationLatitude !== undefined &&
@@ -54,10 +59,22 @@ const Map = () => {
         destinationLatitude,
         destinationLongitude,
       }).then((drivers) => {
-        setDrivers(drivers as MarkerData[]);
+        if (isMounted) {
+          setDrivers(drivers as MarkerData[]);
+        }
       });
     }
-  }, [markers, destinationLatitude, destinationLongitude]);
+    return () => {
+      isMounted = false;
+    };
+  }, [
+    markers,
+    destinationLatitude,
+    destinationLongitude,
+    setDrivers,
+    userLatitude,
+    userLongitude,
+  ]);
 
   const region = calculateRegion({
     userLatitude,

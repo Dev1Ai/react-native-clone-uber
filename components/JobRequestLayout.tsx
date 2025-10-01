@@ -10,7 +10,7 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import Map from "@/components/Map";
 import { icons } from "@/constants";
 
-const RideLayout = ({
+const JobRequestLayout = ({
   title,
   snapPoints,
   children,
@@ -73,4 +73,4 @@ const RideLayout = ({
   );
 };
 
-export default RideLayout;
+export default JobRequestLayout;

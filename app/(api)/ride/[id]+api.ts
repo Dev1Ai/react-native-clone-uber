@@ -40,7 +40,7 @@ export async function GET(request: Request, { id }: { id: string }) {
 
     return Response.json({ data: response });
   } catch (error) {
-    console.error("Error fetching recent rides:", error);
+    console.error("Error fetching recent job requests:", error);
     return Response.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }

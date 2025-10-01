@@ -2,13 +2,13 @@ import { useUser } from "@clerk/clerk-expo";
 import { StripeProvider } from "@stripe/stripe-react-native";
 import { Image, Text, View } from "react-native";
 
+import JobRequestLayout from "@/components/JobRequestLayout";
 import Payment from "@/components/Payment";
-import RideLayout from "@/components/RideLayout";
 import { icons } from "@/constants";
 import { formatTime } from "@/lib/utils";
 import { useDriverStore, useLocationStore } from "@/store";
 
-const BookRide = () => {
+const BookJobRequest = () => {
   const { user } = useUser();
   const { userAddress, destinationAddress } = useLocationStore();
   const { drivers, selectedDriver } = useDriverStore();
@@ -23,7 +23,7 @@ const BookRide = () => {
       merchantIdentifier="merchant.com.uber"
       urlScheme="myapp"
     >
-      <RideLayout title="Book JobRequest">
+      <JobRequestLayout title="Book JobRequest">
         <>
           <Text className="text-xl font-JakartaSemiBold mb-3">
             JobRequest Information
@@ -55,7 +55,9 @@ const BookRide = () => {
 
           <View className="flex flex-col w-full items-start justify-center py-3 px-5 rounded-3xl bg-general-600 mt-5">
             <View className="flex flex-row items-center justify-between w-full border-b border-white py-3">
-              <Text className="text-lg font-JakartaRegular">JobRequest Price</Text>
+              <Text className="text-lg font-JakartaRegular">
+                JobRequest Price
+              </Text>
               <Text className="text-lg font-JakartaRegular text-[#0CC25F]">
                 ${driverDetails?.price}
               </Text>
@@ -100,9 +102,9 @@ const BookRide = () => {
             rideTime={driverDetails?.time!}
           />
         </>
-      </RideLayout>
+      </JobRequestLayout>
     </StripeProvider>
   );
 };
 
-export default BookRide;
+export default BookJobRequest;

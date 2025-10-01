@@ -3,11 +3,11 @@ import { Text, View } from "react-native";
 
 import CustomButton from "@/components/CustomButton";
 import GoogleTextInput from "@/components/GoogleTextInput";
-import RideLayout from "@/components/RideLayout";
+import JobRequestLayout from "@/components/JobRequestLayout";
 import { icons } from "@/constants";
 import { useLocationStore } from "@/store";
 
-const FindRide = () => {
+const FindJobRequest = () => {
   const {
     userAddress,
     destinationAddress,
@@ -16,7 +16,7 @@ const FindRide = () => {
   } = useLocationStore();
 
   return (
-    <RideLayout title="JobRequest">
+    <JobRequestLayout title="JobRequest">
       <View className="my-3">
         <Text className="text-lg font-JakartaSemiBold mb-3">From</Text>
 
@@ -43,11 +43,11 @@ const FindRide = () => {
 
       <CustomButton
         title="Find Now"
-        onPress={() => router.push(`/(root)/confirm-ride`)}
+        onPress={() => router.push(`/(root)/confirm-job-request`)}
         className="mt-5"
       />
-    </RideLayout>
+    </JobRequestLayout>
   );
 };
 
-export default FindRide;
+export default FindJobRequest;

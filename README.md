@@ -62,7 +62,7 @@ members. It's a place where people help each other out.
 
 👉 **Home Screen with Live Location & Google Map**: Real-time location tracking with markers on a map.
 
-👉 **Recent JobRequests**: View a list of recent rides at a glance.
+👉 **Recent JobRequests**: View a list of recent job requests at a glance.
 
 👉 **Google Places Autocomplete**: Search any place on Earth with autocomplete suggestions.
 
@@ -1299,7 +1299,7 @@ export async function GET(request: Request, {id}: { id: string }) {
 
         return Response.json({data: response});
     } catch (error) {
-        console.error("Error fetching recent rides:", error);
+        console.error("Error fetching recent job requests:", error);
         return Response.json({error: "Internal Server Error"}, {status: 500});
     }
 }
@@ -1310,13 +1310,13 @@ export async function GET(request: Request, {id}: { id: string }) {
 ### Screens
 
 <details>
-  <summary><code>(root)/book-ride</code></summary>
+  <summary><code>(root)/book-job-request</code></summary>
 
 ```tsx
 import {useUser} from "@clerk/clerk-expo";
 import {Image, Text, View} from "react-native";
 
-import RideLayout from "@/components/RideLayout";
+import JobRequestLayout from "@/components/JobRequestLayout";
 import {icons} from "@/constants";
 import {formatTime} from "@/lib/utils";
 import {useDriverStore, useLocationStore} from "@/store";
@@ -1331,7 +1331,7 @@ const BookRide = () => {
     )[0];
 
     return (
-        <RideLayout title="Book JobRequest">
+        <JobRequestLayout title="Book JobRequest">
             <>
                 <Text className="text-xl font-JakartaSemiBold mb-3">
                     JobRequest Information
@@ -1402,7 +1402,7 @@ const BookRide = () => {
                     </View>
                 </View>
             </>
-        </RideLayout>
+        </JobRequestLayout>
     );
 };
 

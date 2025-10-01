@@ -2,7 +2,7 @@ import { useUser } from "@clerk/clerk-expo";
 import { useAuth } from "@clerk/clerk-expo";
 import * as Location from "expo-location";
 import { router } from "expo-router";
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import {
   Text,
   View,
@@ -14,8 +14,8 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import GoogleTextInput from "@/components/GoogleTextInput";
+import JobRequestCard from "@/components/JobRequestCard";
 import Map from "@/components/Map";
-import RideCard from "@/components/RideCard";
 import { icons, images } from "@/constants";
 import { useFetch } from "@/lib/fetch";
 import { useLocationStore } from "@/store";
@@ -32,19 +32,16 @@ const Home = () => {
     router.replace("/(auth)/sign-in");
   };
 
-  const [hasPermission, setHasPermission] = useState<boolean>(false);
-
   const {
-    data: recentRides,
+    data: recentJobRequests,
     loading,
     error,
-  } = useFetch<JobRequest[]>(`/(api)/ride/${user?.id}`);
+  } = useFetch<JobRequest[]>(`/(api)/job-request/${user?.id}`);
 
   useEffect(() => {
     (async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== "granted") {
-        setHasPermission(false);
         return;
       }
 
@@ -61,7 +58,7 @@ const Home = () => {
         address: `${address[0].name}, ${address[0].region}`,
       });
     })();
-  }, []);
+  }, [setUserLocation]);
 
   const handleDestinationPress = (location: {
     latitude: number;
@@ -70,14 +67,14 @@ const Home = () => {
   }) => {
     setDestinationLocation(location);
 
-    router.push("/(root)/find-ride");
+    router.push("/(root)/find-job-request");
   };
 
   return (
     <SafeAreaView className="bg-general-500">
       <FlatList
-        data={recentRides?.slice(0, 5)}
-        renderItem={({ item }) => <RideCard ride={item} />}
+        data={recentJobRequests?.slice(0, 5)}
+        renderItem={({ item }) => <JobRequestCard jobRequest={item} />}
         keyExtractor={(item, index) => index.toString()}
         className="px-5"
         keyboardShouldPersistTaps="handled"
@@ -87,15 +84,21 @@ const Home = () => {
         ListEmptyComponent={() => (
           <View className="flex flex-col items-center justify-center">
             {!loading ? (
-              <>
-                <Image
-                  source={images.noResult}
-                  className="w-40 h-40"
-                  alt="No recent rides found"
-                  resizeMode="contain"
-                />
-                <Text className="text-sm">No recent rides found</Text>
-              </>
+              error ? (
+                <Text className="text-sm text-red-500">
+                  Failed to load recent job requests
+                </Text>
+              ) : (
+                <>
+                  <Image
+                    source={images.noResult}
+                    className="w-40 h-40"
+                    alt="No recent job requests found"
+                    resizeMode="contain"
+                  />
+                  <Text className="text-sm">No recent job requests found</Text>
+                </>
+              )
             ) : (
               <ActivityIndicator size="small" color="#000" />
             )}

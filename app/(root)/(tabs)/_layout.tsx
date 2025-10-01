@@ -61,7 +61,7 @@ export default function Layout() {
         }}
       />
       <Tabs.Screen
-        name="rides"
+        name="job-requests"
         options={{
           title: "JobRequests",
           headerShown: false,

@@ -4,14 +4,14 @@ import { icons } from "@/constants";
 import { formatDate, formatTime } from "@/lib/utils";
 import { JobRequest } from "@/types/type";
 
-const RideCard = ({ ride }: { ride: JobRequest }) => {
+const JobRequestCard = ({ jobRequest }: { jobRequest: JobRequest }) => {
   return (
     <View className="flex flex-row items-center justify-center bg-white rounded-lg shadow-sm shadow-neutral-300 mb-3">
       <View className="flex flex-col items-start justify-center p-3">
         <View className="flex flex-row items-center justify-between">
           <Image
             source={{
-              uri: `https://maps.geoapify.com/v1/staticmap?style=osm-bright&width=600&height=400&center=lonlat:${ride.destination_longitude},${ride.destination_latitude}&zoom=14&apiKey=${process.env.EXPO_PUBLIC_GEOAPIFY_API_KEY}`,
+              uri: `https://maps.geoapify.com/v1/staticmap?style=osm-bright&width=600&height=400&center=lonlat:${jobRequest.destination_longitude},${jobRequest.destination_latitude}&zoom=14&apiKey=${process.env.EXPO_PUBLIC_GEOAPIFY_API_KEY}`,
             }}
             className="w-[80px] h-[90px] rounded-lg"
           />
@@ -20,14 +20,14 @@ const RideCard = ({ ride }: { ride: JobRequest }) => {
             <View className="flex flex-row items-center gap-x-2">
               <Image source={icons.to} className="w-5 h-5" />
               <Text className="text-md font-JakartaMedium" numberOfLines={1}>
-                {ride.origin_address}
+                {jobRequest.origin_address}
               </Text>
             </View>
 
             <View className="flex flex-row items-center gap-x-2">
               <Image source={icons.point} className="w-5 h-5" />
               <Text className="text-md font-JakartaMedium" numberOfLines={1}>
-                {ride.destination_address}
+                {jobRequest.destination_address}
               </Text>
             </View>
           </View>
@@ -39,7 +39,8 @@ const RideCard = ({ ride }: { ride: JobRequest }) => {
               Date & Time
             </Text>
             <Text className="text-md font-JakartaBold" numberOfLines={1}>
-              {formatDate(ride.created_at)}, {formatTime(ride.ride_time)}
+              {formatDate(jobRequest.created_at)},{" "}
+              {formatTime(jobRequest.ride_time)}
             </Text>
           </View>
 
@@ -48,7 +49,7 @@ const RideCard = ({ ride }: { ride: JobRequest }) => {
               Provider
             </Text>
             <Text className="text-md font-JakartaBold">
-              {ride.driver.first_name} {ride.driver.last_name}
+              {jobRequest.driver.first_name} {jobRequest.driver.last_name}
             </Text>
           </View>
 
@@ -57,7 +58,7 @@ const RideCard = ({ ride }: { ride: JobRequest }) => {
               Car Seats
             </Text>
             <Text className="text-md font-JakartaBold">
-              {ride.driver.car_seats}
+              {jobRequest.driver.car_seats}
             </Text>
           </View>
 
@@ -66,9 +67,9 @@ const RideCard = ({ ride }: { ride: JobRequest }) => {
               Payment Status
             </Text>
             <Text
-              className={`text-md capitalize font-JakartaBold ${ride.payment_status === "paid" ? "text-green-500" : "text-red-500"}`}
+              className={`text-md capitalize font-JakartaBold ${jobRequest.payment_status === "paid" ? "text-green-500" : "text-red-500"}`}
             >
-              {ride.payment_status}
+              {jobRequest.payment_status}
             </Text>
           </View>
         </View>
@@ -77,4 +78,4 @@ const RideCard = ({ ride }: { ride: JobRequest }) => {
   );
 };
 
-export default RideCard;
+export default JobRequestCard;

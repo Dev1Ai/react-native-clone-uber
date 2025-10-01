@@ -1,0 +1,5 @@
+
+> uber@1.0.0 lint /Users/ansonduran/Projects/servicelink/apps/mobile-uber-polished
+> expo lint
+
+> pnpm eslint .
