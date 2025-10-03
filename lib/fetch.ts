@@ -5,11 +5,19 @@ const API_BASE_URL =
 
 /**
  * Fetch API wrapper with base URL and authentication
+ *
+ * Note: This function intentionally supports both:
+ * 1. NestJS API routes (via ApiClient) - use ApiClient for new code
+ * 2. Expo Router proxy routes (/(api)/*) - legacy mobile-specific endpoints
+ *
+ * The /(api)/* routes are Expo Router API routes defined in app/(api)/**\/*.ts
+ * They handle mobile-specific concerns (Stripe, legacy ride management) and are
+ * NOT part of the NestJS backend. They should continue using fetchAPI().
  */
 export const fetchAPI = async (url: string, options?: RequestInit) => {
   try {
     // Construct full URL
-    // Keep Expo router proxy routes (/(api)/*) as-is
+    // Keep Expo router proxy routes (/(api)/*) as-is - these are local Expo API routes
     // Otherwise prepend API_BASE_URL for regular API calls
     const fullUrl =
       url.startsWith("http") || url.startsWith("/(")
