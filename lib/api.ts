@@ -1,8 +1,8 @@
-import { fetchAPI } from './fetch';
-import * as SecureStore from 'expo-secure-store';
+import { fetchAPI } from "./fetch";
+import * as SecureStore from "expo-secure-store";
 
-const TOKEN_KEY = 'auth_token';
-const USER_KEY = 'user_data';
+const TOKEN_KEY = "auth_token";
+const USER_KEY = "user_data";
 
 /**
  * API client for ServiceLink backend
@@ -46,7 +46,7 @@ export class ApiClient {
    */
   static async request<T = any>(
     url: string,
-    options?: RequestInit
+    options?: RequestInit,
   ): Promise<T> {
     const token = await this.getToken();
 
@@ -66,10 +66,10 @@ export class ApiClient {
     email: string;
     password: string;
     name: string;
-    role?: 'CUSTOMER' | 'PROVIDER';
+    role?: "CUSTOMER" | "PROVIDER";
   }) {
-    const response = await fetchAPI('/auth/signup', {
-      method: 'POST',
+    const response = await fetchAPI("/auth/signup", {
+      method: "POST",
       body: JSON.stringify(data),
     });
 
@@ -84,8 +84,8 @@ export class ApiClient {
    * Sign in existing user
    */
   static async signIn(data: { email: string; password: string }) {
-    const response = await fetchAPI('/auth/login', {
-      method: 'POST',
+    const response = await fetchAPI("/auth/login", {
+      method: "POST",
       body: JSON.stringify(data),
     });
 
@@ -100,7 +100,7 @@ export class ApiClient {
    * Get current user profile
    */
   static async getProfile() {
-    return this.request('/auth/profile');
+    return this.request("/auth/profile");
   }
 
   /**
@@ -120,8 +120,8 @@ export class ApiClient {
     description: string;
     categoryId?: string;
   }) {
-    return this.request('/jobs', {
-      method: 'POST',
+    return this.request("/jobs", {
+      method: "POST",
       body: JSON.stringify(data),
     });
   }
@@ -130,7 +130,7 @@ export class ApiClient {
    * Get all jobs for current user
    */
   static async getJobs() {
-    return this.request('/jobs');
+    return this.request("/jobs/mine");
   }
 
   /**
@@ -192,7 +192,7 @@ export class ApiClient {
    */
   static async acceptQuote(jobId: string, quoteId: string) {
     return this.request(`/jobs/${jobId}/quotes/${quoteId}/accept`, {
-      method: 'POST',
+      method: "POST",
     });
   }
 
@@ -201,12 +201,9 @@ export class ApiClient {
   /**
    * Create payment intent
    */
-  static async createPaymentIntent(data: {
-    jobId: string;
-    amount: number;
-  }) {
-    return this.request('/payments/create-intent', {
-      method: 'POST',
+  static async createPaymentIntent(data: { jobId: string; amount: number }) {
+    return this.request("/payments/create-intent", {
+      method: "POST",
       body: JSON.stringify(data),
     });
   }
@@ -217,6 +214,6 @@ export class ApiClient {
    * Get all categories
    */
   static async getCategories() {
-    return this.request('/categories');
+    return this.request("/categories");
   }
 }

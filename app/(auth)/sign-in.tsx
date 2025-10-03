@@ -34,7 +34,10 @@ const SignIn = () => {
       router.replace("/(root)/(tabs)/home");
     } catch (error: any) {
       console.error("Sign in error:", error);
-      Alert.alert("Error", error.message || "Failed to sign in. Please try again.");
+      Alert.alert(
+        "Error",
+        error.message || "Failed to sign in. Please try again.",
+      );
     } finally {
       setIsLoading(false);
     }

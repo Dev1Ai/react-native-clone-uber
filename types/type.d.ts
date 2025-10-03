@@ -33,6 +33,7 @@ declare interface MapProps {
   onMapReady?: () => void;
 }
 
+// Legacy ride/job request type (for Expo proxy routes)
 declare interface JobRequest {
   origin_address: string;
   destination_address: string;
@@ -53,9 +54,37 @@ declare interface JobRequest {
   };
 }
 
+// API Job type (from NestJS backend)
+declare interface Job {
+  id: string;
+  key: string;
+  title: string;
+  description: string;
+  customerId: string;
+  createdAt: string;
+  assignment?: {
+    id: string;
+    providerId: string;
+    acceptedAt: string;
+    status: string;
+    scheduledStart?: string;
+    scheduledEnd?: string;
+    scheduleVersion: number;
+    scheduleProposedBy?: string;
+    scheduleProposedAt?: string;
+    provider: {
+      id: string;
+      user: {
+        name: string;
+        email: string;
+      };
+    };
+  };
+}
+
 declare interface JobRequestCardProps {
   index: number;
-  item: JobRequest;
+  item: Job | JobRequest; // Support both types during migration
 }
 
 declare interface ButtonProps extends TouchableOpacityProps {

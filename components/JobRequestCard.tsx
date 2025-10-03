@@ -2,9 +2,94 @@ import { Image, Text, View } from "react-native";
 
 import { icons } from "@/constants";
 import { formatDate, formatTime } from "@/lib/utils";
-import { JobRequest } from "@/types/type";
+import { Job, JobRequest } from "@/types/type";
 
-const JobRequestCard = ({ jobRequest }: { jobRequest: JobRequest }) => {
+// Type guard to check if item is a Job (from API) vs JobRequest (legacy)
+function isJob(item: Job | JobRequest): item is Job {
+  return "key" in item && "title" in item;
+}
+
+const JobRequestCard = ({ jobRequest }: { jobRequest: Job | JobRequest }) => {
+  // Handle new Job type from API
+  if (isJob(jobRequest)) {
+    const job = jobRequest;
+    return (
+      <View className="flex flex-row items-center justify-center bg-white rounded-lg shadow-sm shadow-neutral-300 mb-3">
+        <View className="flex flex-col items-start justify-center p-3 w-full">
+          <View className="flex flex-row items-center justify-between w-full mb-3">
+            <View className="flex flex-col flex-1">
+              <Text className="text-lg font-JakartaBold" numberOfLines={1}>
+                {job.title}
+              </Text>
+              <Text
+                className="text-sm font-JakartaMedium text-gray-500 mt-1"
+                numberOfLines={2}
+              >
+                {job.description}
+              </Text>
+            </View>
+          </View>
+
+          <View className="flex flex-col w-full bg-general-500 rounded-lg p-3 items-start justify-center">
+            <View className="flex flex-row items-center w-full justify-between mb-3">
+              <Text className="text-md font-JakartaMedium text-gray-500">
+                Date Created
+              </Text>
+              <Text className="text-md font-JakartaBold" numberOfLines={1}>
+                {formatDate(job.createdAt)}
+              </Text>
+            </View>
+
+            {job.assignment && (
+              <>
+                <View className="flex flex-row items-center w-full justify-between mb-3">
+                  <Text className="text-md font-JakartaMedium text-gray-500">
+                    Provider
+                  </Text>
+                  <Text className="text-md font-JakartaBold">
+                    {job.assignment.provider.user.name}
+                  </Text>
+                </View>
+
+                <View className="flex flex-row items-center w-full justify-between mb-3">
+                  <Text className="text-md font-JakartaMedium text-gray-500">
+                    Status
+                  </Text>
+                  <Text className="text-md capitalize font-JakartaBold text-blue-500">
+                    {job.assignment.status.replace(/_/g, " ")}
+                  </Text>
+                </View>
+
+                {job.assignment.scheduledStart && (
+                  <View className="flex flex-row items-center w-full justify-between">
+                    <Text className="text-md font-JakartaMedium text-gray-500">
+                      Scheduled
+                    </Text>
+                    <Text className="text-md font-JakartaBold">
+                      {formatDate(job.assignment.scheduledStart)}
+                    </Text>
+                  </View>
+                )}
+              </>
+            )}
+
+            {!job.assignment && (
+              <View className="flex flex-row items-center w-full justify-between">
+                <Text className="text-md font-JakartaMedium text-gray-500">
+                  Status
+                </Text>
+                <Text className="text-md capitalize font-JakartaBold text-orange-500">
+                  Pending Quotes
+                </Text>
+              </View>
+            )}
+          </View>
+        </View>
+      </View>
+    );
+  }
+
+  // Legacy JobRequest rendering
   return (
     <View className="flex flex-row items-center justify-center bg-white rounded-lg shadow-sm shadow-neutral-300 mb-3">
       <View className="flex flex-col items-start justify-center p-3">

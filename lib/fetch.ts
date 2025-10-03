@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 
-const API_BASE_URL = process.env.EXPO_PUBLIC_API_BASE_URL || 'http://localhost:3001';
+const API_BASE_URL =
+  process.env.EXPO_PUBLIC_API_BASE_URL || "http://localhost:3001";
 
 /**
  * Fetch API wrapper with base URL and authentication
@@ -8,19 +9,26 @@ const API_BASE_URL = process.env.EXPO_PUBLIC_API_BASE_URL || 'http://localhost:3
 export const fetchAPI = async (url: string, options?: RequestInit) => {
   try {
     // Construct full URL
-    const fullUrl = url.startsWith('http') ? url : `${API_BASE_URL}${url}`;
+    // Keep Expo router proxy routes (/(api)/*) as-is
+    // Otherwise prepend API_BASE_URL for regular API calls
+    const fullUrl =
+      url.startsWith("http") || url.startsWith("/(")
+        ? url
+        : `${API_BASE_URL}${url}`;
 
     const response = await fetch(fullUrl, {
       ...options,
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         ...options?.headers,
       },
     });
 
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({}));
-      throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
+      throw new Error(
+        errorData.message || `HTTP error! status: ${response.status}`,
+      );
     }
 
     return await response.json();

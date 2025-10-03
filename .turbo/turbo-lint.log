@@ -3,3 +3,54 @@
 > expo lint
 
 > pnpm eslint .
+
+/Users/ansonduran/Projects/servicelink/apps/mobile-uber-polished/app/(auth)/sign-in.tsx
+  37:19  error  Replace `"Error",·error.message·||·"Failed·to·sign·in.·Please·try·again."` with `⏎········"Error",⏎········error.message·||·"Failed·to·sign·in.·Please·try·again.",⏎······`  prettier/prettier
+
+/Users/ansonduran/Projects/servicelink/apps/mobile-uber-polished/app/(auth)/sign-up.tsx
+  11:10  warning  'fetchAPI' is defined but never used                            @typescript-eslint/no-unused-vars
+  12:1   error    `@/lib/api` import should occur before import of `@/lib/fetch`  import/order
+  61:19  error    Replace `'CUSTOMER'` with `"CUSTOMER"`                          prettier/prettier
+  64:23  error    Replace `'User·created·in·API:'` with `"User·created·in·API:"`  prettier/prettier
+  74:25  error    Replace `'API·signup·error:'` with `"API·signup·error:"`        prettier/prettier
+
+/Users/ansonduran/Projects/servicelink/apps/mobile-uber-polished/app/(root)/(tabs)/home.tsx
+  20:10  warning  'useFetch' is defined but never used                            @typescript-eslint/no-unused-vars
+  22:10  warning  'JobRequest' is defined but never used                          @typescript-eslint/no-unused-vars
+  23:1   error    There should be at least one empty line between import groups   import/order
+  23:1   error    `@/lib/api` import should occur before import of `@/lib/fetch`  import/order
+  24:1   error    `react` import should occur before import of `react-native`     import/order
+
+/Users/ansonduran/Projects/servicelink/apps/mobile-uber-polished/lib/api.ts
+    1:1   error  There should be at least one empty line between import groups                              import/order
+    1:26  error  Replace `'./fetch'` with `"./fetch"`                                                       prettier/prettier
+    2:1   error  `expo-secure-store` import should occur before import of `./fetch`                         import/order
+    2:30  error  Replace `'expo-secure-store'` with `"expo-secure-store"`                                   prettier/prettier
+    4:19  error  Replace `'auth_token'` with `"auth_token"`                                                 prettier/prettier
+    5:18  error  Replace `'user_data'` with `"user_data"`                                                   prettier/prettier
+   49:26  error  Insert `,`                                                                                 prettier/prettier
+   69:12  error  Replace `'CUSTOMER'·|·'PROVIDER'` with `"CUSTOMER"·|·"PROVIDER"`                           prettier/prettier
+   71:37  error  Replace `'/auth/signup'` with `"/auth/signup"`                                             prettier/prettier
+   72:15  error  Replace `'POST'` with `"POST"`                                                             prettier/prettier
+   87:37  error  Replace `'/auth/login'` with `"/auth/login"`                                               prettier/prettier
+   88:15  error  Replace `'POST'` with `"POST"`                                                             prettier/prettier
+  103:25  error  Replace `'/auth/profile'` with `"/auth/profile"`                                           prettier/prettier
+  123:25  error  Replace `'/jobs'` with `"/jobs"`                                                           prettier/prettier
+  124:15  error  Replace `'POST'` with `"POST"`                                                             prettier/prettier
+  133:25  error  Replace `'/jobs'` with `"/jobs"`                                                           prettier/prettier
+  195:15  error  Replace `'POST'` with `"POST"`                                                             prettier/prettier
+  204:43  error  Replace `⏎····jobId:·string;⏎····amount:·number;⏎·` with `·jobId:·string;·amount:·number`  prettier/prettier
+  208:25  error  Replace `'/payments/create-intent'` with `"/payments/create-intent"`                       prettier/prettier
+  209:15  error  Replace `'POST'` with `"POST"`                                                             prettier/prettier
+  220:25  error  Replace `'/categories'` with `"/categories"`                                               prettier/prettier
+
+/Users/ansonduran/Projects/servicelink/apps/mobile-uber-polished/lib/fetch.ts
+   3:21  error  Replace `·process.env.EXPO_PUBLIC_API_BASE_URL·||·'http://localhost:3001'` with `⏎··process.env.EXPO_PUBLIC_API_BASE_URL·||·"http://localhost:3001"`           prettier/prettier
+  11:36  error  Replace `'http'` with `"http"`                                                                                                                                 prettier/prettier
+  16:9   error  Replace `'Content-Type':·'application/json'` with `"Content-Type":·"application/json"`                                                                         prettier/prettier
+  23:23  error  Replace `errorData.message·||·`HTTP·error!·status:·${response.status}`` with `⏎········errorData.message·||·`HTTP·error!·status:·${response.status}`,⏎······`  prettier/prettier
+
+✖ 36 problems (33 errors, 3 warnings)
+  33 errors and 0 warnings potentially fixable with the `--fix` option.
+
+ ELIFECYCLE  Command failed with exit code 1.

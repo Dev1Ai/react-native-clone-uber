@@ -58,10 +58,10 @@ const SignUp = () => {
             email: form.email,
             password: form.password,
             name: form.name,
-            role: 'CUSTOMER', // Default to customer, can add role selection later
+            role: "CUSTOMER", // Default to customer, can add role selection later
           });
 
-          console.log('User created in API:', response);
+          console.log("User created in API:", response);
 
           // Also keep Clerk session active for mobile UI features
           await setActive({ session: completeSignUp.createdSessionId });
@@ -71,7 +71,7 @@ const SignUp = () => {
             state: "success",
           });
         } catch (apiError: any) {
-          console.error('API signup error:', apiError);
+          console.error("API signup error:", apiError);
           // Even if API fails, continue with Clerk session
           // User can be synced later
           await setActive({ session: completeSignUp.createdSessionId });

@@ -17,16 +17,15 @@ import GoogleTextInput from "@/components/GoogleTextInput";
 import JobRequestCard from "@/components/JobRequestCard";
 import Map from "@/components/Map";
 import { icons, images } from "@/constants";
-import { useFetch } from "@/lib/fetch";
 import { useLocationStore } from "@/store";
-import { JobRequest } from "@/types/type";
+import { Job } from "@/types/type";
 import { ApiClient } from "@/lib/api";
 import { useState } from "react";
 
 const Home = () => {
   const { user } = useUser();
   const { signOut } = useAuth();
-  const [recentJobRequests, setRecentJobRequests] = useState<any[]>([]);
+  const [recentJobRequests, setRecentJobRequests] = useState<Job[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
