@@ -9,6 +9,7 @@ import InputField from "@/components/InputField";
 import OAuth from "@/components/OAuth";
 import { icons, images } from "@/constants";
 import { fetchAPI } from "@/lib/fetch";
+import { ApiClient } from "@/lib/api";
 
 const SignUp = () => {
   const { isLoaded, signUp, setActive } = useSignUp();
@@ -51,19 +52,34 @@ const SignUp = () => {
         code: verification.code,
       });
       if (completeSignUp.status === "complete") {
-        await fetchAPI("/(api)/user", {
-          method: "POST",
-          body: JSON.stringify({
-            name: form.name,
+        try {
+          // Create user in our API backend
+          const response = await ApiClient.signUp({
             email: form.email,
-            clerkId: completeSignUp.createdUserId,
-          }),
-        });
-        await setActive({ session: completeSignUp.createdSessionId });
-        setVerification({
-          ...verification,
-          state: "success",
-        });
+            password: form.password,
+            name: form.name,
+            role: 'CUSTOMER', // Default to customer, can add role selection later
+          });
+
+          console.log('User created in API:', response);
+
+          // Also keep Clerk session active for mobile UI features
+          await setActive({ session: completeSignUp.createdSessionId });
+
+          setVerification({
+            ...verification,
+            state: "success",
+          });
+        } catch (apiError: any) {
+          console.error('API signup error:', apiError);
+          // Even if API fails, continue with Clerk session
+          // User can be synced later
+          await setActive({ session: completeSignUp.createdSessionId });
+          setVerification({
+            ...verification,
+            state: "success",
+          });
+        }
       } else {
         setVerification({
           ...verification,

@@ -20,23 +20,42 @@ import { icons, images } from "@/constants";
 import { useFetch } from "@/lib/fetch";
 import { useLocationStore } from "@/store";
 import { JobRequest } from "@/types/type";
+import { ApiClient } from "@/lib/api";
+import { useState } from "react";
 
 const Home = () => {
   const { user } = useUser();
   const { signOut } = useAuth();
+  const [recentJobRequests, setRecentJobRequests] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   const { setUserLocation, setDestinationLocation } = useLocationStore();
 
-  const handleSignOut = () => {
+  const handleSignOut = async () => {
+    await ApiClient.signOut();
     signOut();
     router.replace("/(auth)/sign-in");
   };
 
-  const {
-    data: recentJobRequests,
-    loading,
-    error,
-  } = useFetch<JobRequest[]>(`/(api)/job-request/${user?.id}`);
+  // Fetch jobs from API
+  useEffect(() => {
+    const fetchJobs = async () => {
+      try {
+        setLoading(true);
+        const jobs = await ApiClient.getJobs();
+        setRecentJobRequests(jobs);
+        setError(null);
+      } catch (err: any) {
+        console.error("Error fetching jobs:", err);
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchJobs();
+  }, []);
 
   useEffect(() => {
     (async () => {
