@@ -13,13 +13,28 @@
       "backgroundColor": "#2F80ED"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "infoPlist": {
+        "UIBackgroundModes": ["remote-notification"]
+      }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "googleServicesFile": "./google-services.json",
+      "permissions": [
+        "android.permission.RECEIVE_BOOT_COMPLETED",
+        "android.permission.VIBRATE",
+        "android.permission.WAKE_LOCK"
+      ]
+    },
+    "notification": {
+      "icon": "./assets/images/notification-icon.png",
+      "color": "#2F80ED",
+      "androidMode": "default",
+      "androidCollapsedTitle": "{{unread_count}} new notifications"
     },
     "web": {
       "bundler": "metro",
@@ -31,6 +46,14 @@
         "expo-router",
         {
           "origin": "https://uber.dev/"
+        }
+      ],
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/images/notification-icon.png",
+          "color": "#2F80ED",
+          "sounds": ["./assets/sounds/notification.wav"]
         }
       ]
     ],
