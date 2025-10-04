@@ -3,8 +3,9 @@ import { ActivityIndicator, Text, View } from "react-native";
 import MapView, { Marker, PROVIDER_DEFAULT } from "react-native-maps";
 import MapViewDirections from "react-native-maps-directions";
 
+
 import { icons } from "@/constants";
-import { useFetch } from "@/lib/fetch";
+import { ApiClient } from "@/lib/api";
 import {
   calculateDriverTimes,
   calculateRegion,
@@ -24,57 +25,92 @@ const Map = () => {
   } = useLocationStore();
   const { selectedDriver, setDrivers } = useDriverStore();
 
-  const {
-    data: drivers,
-    loading,
-    error,
-  } = useFetch<Provider[]>("/(api)/driver");
+  const [providers, setProviders] = useState<Provider[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [markers, setMarkers] = useState<MarkerData[]>([]);
 
+  // Fetch nearby providers from backend
   useEffect(() => {
-    if (Array.isArray(drivers)) {
+    const fetchProviders = async () => {
       if (!userLatitude || !userLongitude) return;
 
+      try {
+        setLoading(true);
+        const response = await ApiClient.request<{ items: Provider[] }>(
+          `/providers/near?lat=${userLatitude}&lng=${userLongitude}&radiusKm=25&onlineOnly=true`
+        );
+        setProviders(response.items || []);
+        setError(null);
+      } catch (err: any) {
+        console.error("Error fetching providers:", err);
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProviders();
+  }, [userLatitude, userLongitude]);
+
+  // Generate markers from providers
+  useEffect(() => {
+    if (providers.length > 0 && userLatitude && userLongitude) {
       const newMarkers = generateMarkersFromData({
-        data: drivers,
+        data: providers,
         userLatitude,
         userLongitude,
       });
-
       setMarkers(newMarkers);
     }
-  }, [drivers, userLatitude, userLongitude]);
+  }, [providers, userLatitude, userLongitude]);
 
-  useEffect(() => {
-    let isMounted = true;
-    if (
-      markers.length > 0 &&
-      destinationLatitude !== undefined &&
-      destinationLongitude !== undefined
-    ) {
-      calculateDriverTimes({
-        markers,
-        userLatitude,
-        userLongitude,
-        destinationLatitude,
-        destinationLongitude,
-      }).then((drivers) => {
-        if (isMounted) {
-          setDrivers(drivers as MarkerData[]);
-        }
-      });
-    }
-    return () => {
-      isMounted = false;
-    };
-  }, [
-    markers,
-    destinationLatitude,
-    destinationLongitude,
-    setDrivers,
-    userLatitude,
-    userLongitude,
-  ]);
+  // Disabled markers generation since we're not fetching drivers
+  // useEffect(() => {
+  //   if (Array.isArray(drivers) && drivers.length > 0) {
+  //     if (!userLatitude || !userLongitude) return;
+  //
+  //     const newMarkers = generateMarkersFromData({
+  //       data: drivers,
+  //       userLatitude,
+  //       userLongitude,
+  //     });
+  //
+  //     setMarkers(newMarkers);
+  //   }
+  // }, [drivers, userLatitude, userLongitude]);
+
+  // Disabled driver times calculation since we're not fetching drivers
+  // useEffect(() => {
+  //   let isMounted = true;
+  //   if (
+  //     markers.length > 0 &&
+  //     destinationLatitude !== undefined &&
+  //     destinationLongitude !== undefined
+  //   ) {
+  //     calculateDriverTimes({
+  //       markers,
+  //       userLatitude,
+  //       userLongitude,
+  //       destinationLatitude,
+  //       destinationLongitude,
+  //     }).then((drivers) => {
+  //       if (isMounted) {
+  //         setDrivers(drivers as MarkerData[]);
+  //       }
+  //     });
+  //   }
+  //   return () => {
+  //     isMounted = false;
+  //   };
+  // }, [
+  //   markers,
+  //   destinationLatitude,
+  //   destinationLongitude,
+  //   setDrivers,
+  //   userLatitude,
+  //   userLongitude,
+  // ]);
 
   const region = calculateRegion({
     userLatitude,
@@ -100,11 +136,11 @@ const Map = () => {
   return (
     <MapView
       provider={PROVIDER_DEFAULT}
-      className="w-full h-full rounded-2xl"
+      style={{ width: '100%', height: '100%', borderRadius: 16 }}
       tintColor="black"
       mapType="mutedStandard"
       showsPointsOfInterest={false}
-      initialRegion={region}
+      region={region}
       showsUserLocation={true}
       userInterfaceStyle="light"
     >
