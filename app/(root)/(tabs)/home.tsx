@@ -1,5 +1,3 @@
-import { useUser } from "@clerk/clerk-expo";
-import { useAuth } from "@clerk/clerk-expo";
 import * as Location from "expo-location";
 import { router } from "expo-router";
 import { useEffect } from "react";
@@ -23,8 +21,7 @@ import { ApiClient } from "@/lib/api";
 import { useState } from "react";
 
 const Home = () => {
-  const { user } = useUser();
-  const { signOut } = useAuth();
+  const [user, setUser] = useState<{ name: string } | null>(null);
   const [recentJobRequests, setRecentJobRequests] = useState<Job[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -33,48 +30,73 @@ const Home = () => {
 
   const handleSignOut = async () => {
     await ApiClient.signOut();
-    signOut();
     router.replace("/(auth)/sign-in");
   };
 
-  // Fetch jobs from API
+  // Fetch user profile and jobs from API
   useEffect(() => {
-    const fetchJobs = async () => {
+    const fetchData = async () => {
       try {
         setLoading(true);
+
+        // Fetch user profile
+        console.log("📡 Fetching user profile from /auth/me...");
+        const profile = await ApiClient.request("/auth/me");
+        console.log("✅ User profile fetched:", profile);
+        setUser(profile);
+
+        // Fetch jobs
+        console.log("📡 Fetching jobs from /jobs/mine...");
         const jobs = await ApiClient.getJobs();
+        console.log("✅ Jobs fetched:", jobs);
         setRecentJobRequests(jobs);
         setError(null);
       } catch (err: any) {
-        console.error("Error fetching jobs:", err);
+        console.error("❌ Error fetching data:", err);
+        console.error("Error details:", {
+          message: err.message,
+          stack: err.stack,
+          response: err.response,
+        });
         setError(err.message);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchJobs();
+    fetchData();
   }, []);
 
   useEffect(() => {
     (async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();
+
       if (status !== "granted") {
         return;
       }
 
       let location = await Location.getCurrentPositionAsync({});
 
-      const address = await Location.reverseGeocodeAsync({
-        latitude: location.coords?.latitude!,
-        longitude: location.coords?.longitude!,
-      });
+      try {
+        const address = await Location.reverseGeocodeAsync({
+          latitude: location.coords?.latitude!,
+          longitude: location.coords?.longitude!,
+        });
 
-      setUserLocation({
-        latitude: location.coords?.latitude,
-        longitude: location.coords?.longitude,
-        address: `${address[0].name}, ${address[0].region}`,
-      });
+        setUserLocation({
+          latitude: location.coords?.latitude,
+          longitude: location.coords?.longitude,
+          address: `${address[0].name}, ${address[0].region}`,
+        });
+      } catch (err: any) {
+        console.error('Geocoding error:', err.message);
+        // Set location without address if geocoding fails
+        setUserLocation({
+          latitude: location.coords?.latitude,
+          longitude: location.coords?.longitude,
+          address: 'Location unavailable',
+        });
+      }
     })();
   }, [setUserLocation]);
 
@@ -126,7 +148,7 @@ const Home = () => {
           <>
             <View className="flex flex-row items-center justify-between my-5">
               <Text className="text-2xl font-JakartaExtraBold">
-                Welcome {user?.firstName}👋
+                Welcome {user?.name?.split(" ")[0] || ""}👋
               </Text>
               <TouchableOpacity
                 onPress={handleSignOut}
@@ -146,7 +168,7 @@ const Home = () => {
               <Text className="text-xl font-JakartaBold mt-5 mb-3">
                 Your current location
               </Text>
-              <View className="flex flex-row items-center bg-transparent h-[300px]">
+              <View className="w-full h-[300px]">
                 <Map />
               </View>
             </>

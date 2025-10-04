@@ -11,15 +11,18 @@ export const generateMarkersFromData = ({
   userLatitude: number;
   userLongitude: number;
 }): MarkerData[] => {
-  return data.map((driver) => {
-    const latOffset = (Math.random() - 0.5) * 0.01; // Random offset between -0.005 and 0.005
-    const lngOffset = (Math.random() - 0.5) * 0.01; // Random offset between -0.005 and 0.005
-
+  return data.map((provider) => {
     return {
-      latitude: userLatitude + latOffset,
-      longitude: userLongitude + lngOffset,
-      title: `${driver.first_name} ${driver.last_name}`,
-      ...driver,
+      id: Number(provider.id) || 0,
+      latitude: provider.lat,
+      longitude: provider.lng,
+      title: provider.user?.name || 'Provider',
+      profile_image_url: '',
+      car_image_url: '',
+      car_seats: 0,
+      rating: 0,
+      first_name: provider.user?.name?.split(' ')[0] || '',
+      last_name: provider.user?.name?.split(' ')[1] || '',
     };
   });
 };
